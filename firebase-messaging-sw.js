@@ -33,9 +33,9 @@ messaging.setBackgroundMessageHandler(function(payload) {
         payload,
     );
     // Customize notification here
-    const notificationTitle = "hii munna";
+    const notificationTitle = " Message Title";
     const notificationOptions = {
-        body: "i love you",
+        body: " Message body.",
         icon: "./user.png",
     };
 
