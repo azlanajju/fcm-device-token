@@ -1,0 +1,73 @@
+<html>
+<title>Firebase Messaging Demo</title>
+<style>
+    div {
+        margin-bottom: 15px;
+    }
+</style>
+<body>
+    <div id="token"></div>
+    <div id="msg"></div>
+    <div id="notis"></div>
+    <div id="err"></div>
+    <script>
+        MsgElem = document.getElementById("msg");
+        TokenElem = document.getElementById("token");
+        NotisElem = document.getElementById("notis");
+        ErrElem = document.getElementById("err");
+    </script>
+
+    <script src="https://www.gstatic.com/firebasejs/8.9.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.9.1/firebase-messaging.js"></script>
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyCAFONpVRASRlZPeCVqekIj1OXvhXtFOEQ",
+            authDomain: "fir-api-c0d9d.firebaseapp.com",
+            databaseURL: "https://fir-api-c0d9d-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "fir-api-c0d9d",
+            storageBucket: "fir-api-c0d9d.appspot.com",
+            messagingSenderId: "911248093259",
+            appId: "1:911248093259:web:794df2cb81aa7b5a0e1dce",
+            measurementId: "G-6ZR5R12NB3"
+        };
+        firebase.initializeApp(firebaseConfig);
+
+        const messaging = firebase.messaging();
+        messaging
+            .requestPermission()
+            .then(function () {
+                MsgElem.innerHTML = "Notification permission granted.";
+                console.log("Notification permission granted.");
+                return messaging.getToken();
+            })
+            .then(function (token) {
+                TokenElem.innerHTML = "FCM Token: " + token;
+                console.log("FCM Token: " + token);
+            })
+            .catch(function (err) {
+                ErrElem.innerHTML = ErrElem.innerHTML + "; " + err;
+                console.log("Unable to get permission to notify.", err);
+            });
+
+        messaging.onMessage(function (payload) {
+            console.log("Message received. ", payload);
+            NotisElem.innerHTML = NotisElem.innerHTML + "<br>" + JSON.stringify(payload);
+        });
+    </script>
+
+    <script>
+        if ("serviceWorker" in navigator) {
+            window.addEventListener("load", function () {
+                navigator.serviceWorker
+                    .register("/firebase-messaging-sw.js")
+                    .then(function (registration) {
+                        console.log("ServiceWorker registration successful with scope: ", registration.scope);
+                    })
+                    .catch(function (err) {
+                        console.log("ServiceWorker registration failed: ", err);
+                    });
+            });
+        }
+    </script>
+</body>
+</html>
