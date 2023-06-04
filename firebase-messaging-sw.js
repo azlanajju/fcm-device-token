@@ -33,7 +33,9 @@ messaging.setBackgroundMessageHandler(function(payload) {
         payload,
     );
     // Customize notification here
-    const notificationTitle = " Message Title";
+    // const notificationTitle = " Message Title";
+    const notificationData = payload.data;
+    const notificationTitle = notificationData.title;
     const notificationOptions = {
         body: " Message body.",
         icon: "./user.png",
